@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Animations</title>
+    <style>
+        .container {
+            padding: 20px;
+        }
+
+        .radio-group {
+            margin-bottom: 20px;
+        }
+
+        .radio-group label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* Base button styles */
+        .animated-button {
+            position: relative;
+            height: 70px;
+            width: 150px;
+            background: transparent;
+            border: 2px solid violet;
+            color: violet;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .animated-button::before {
+            content: '';
+            position: absolute;
+            background: violet;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            transition: clip-path 0.7s ease-in-out;
+        }
+
+        .animated-button:hover {
+            color: white;
+        }
+
+        /* Animation variations */
+        .circle::before {
+            clip-path: circle(0% at 0% 100%);
+        }
+
+        .circle:hover::before {
+            clip-path: circle(150% at 0% 100%);
+        }
+
+        .ellipse::before {
+            clip-path: ellipse(0% 0% at 0% 100%);
+        }
+
+        .ellipse:hover::before {
+            clip-path: ellipse(150% 150% at 0% 100%);
+        }
+
+        .polygon::before {
+            clip-path: polygon(0% 100%, 0% 100%, 0% 100%);
+        }
+
+        .polygon:hover::before {
+            clip-path: polygon(-50% 150%, 150% -50%, 150% 150%);
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="radio-group">
+            <h2>Select Animation Style:</h2>
+            <label>
+                <input type="radio" name="effect" value="circle" checked> 
+                Circular Reveal
+            </label>
+            <label>
+                <input type="radio" name="effect" value="ellipse"> 
+                Elliptical Reveal
+            </label>
+            <label>
+                <input type="radio" name="effect" value="polygon"> 
+                Diagonal Sweep
+            </label>
+        </div>
+
+        <button class="animated-button circle">Hover on me!</button>
+    </div>
+
+    <script>
+        const button = document.querySelector('.animated-button');
+        const radioButtons = document.querySelectorAll('input[name="effect"]');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                // Remove all animation classes
+                button.classList.remove('circle', 'ellipse', 'polygon');
+                // Add the selected animation class
+                button.classList.add(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
