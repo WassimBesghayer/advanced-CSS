@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 Night Vision Effect 🥽</title>
+</head>
+<body>
+    <!-- TV noise filter -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="noise" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence id="turbulence" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch">
+                    <!-- create dynamic visual effects -->
+                    <animate attributeName="baseFrequency" dur="15s" values="0.9 0.9; 0.8 0.8; 0.9 0.9;" repeatCount="indefinite"></animate>
+                </feTurbulence>
+                <!-- This creates the displacement effect that gives you that TV static look -->
+                <feDisplacementMap in="SourceGraphic" scale="40"></feDisplacementMap>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Background image (natural, no green tint) -->
+    <div class="background-image"></div>
+    
+    <!-- TV noise effect, but now semi-transparent so the image shows through -->
+    <section class="tv-noise"></section>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Background image - completely natural, no color modification */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://d1ldvf68ux039x.cloudfront.net/thumbs/photos/2008/6317262/1000w_q95.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        /* TV noise effect (semi-transparent) */
+        .tv-noise {
+            position: fixed;
+            top: -50px;
+            left: -50px;
+            width: calc(100% + 100px);
+            height: calc(100% + 100px);
+            
+            /* Gradient pattern, but now with transparency */
+            /* The rgba() values create green tint while allowing the background to show through */
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.3),           /* Semi-transparent black */
+                rgba(0, 0, 0, 0.3) 50%, 
+                rgba(255, 255, 255, 0.1) 50%, /* Very subtle white */
+                rgba(255, 255, 255, 0.1),
+                rgba(0, 255, 0, 0.4) 50%,     /* Semi-transparent green - this creates the night vision tint */
+                rgba(0, 255, 0, 0.4)
+            );
+            background-size: 5px 5px;
+            
+            /* Noise filter */
+            filter: url(#noise);
+            z-index: 2;
+            
+            /* Blend mode helps the green integrate naturally with the background */
+            mix-blend-mode: screen;
+        }
+
+        /* Enhanced circular vignette for authentic goggle field-of-view */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            /* Multiple radial gradients create the goggle effect */
+            background: 
+                /* Main circular viewport - creates the goggle lens effect */
+                radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.8) 80%, black 100%),
+                /* Secondary vignetting for more realistic falloff */
+                radial-gradient(circle at center, transparent 10%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.7) 90%);
+                
+            z-index: 3;
+            pointer-events: none;
+        }
+    </style>
+</body>
+</html>
